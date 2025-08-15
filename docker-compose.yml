@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  py4web:
+    build:
+      context: .
+      dockerfile: Dockerfile.py4web
+    container_name: py4web_app
+    volumes:
+      - ./apps:/home/py4web/apps
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy_server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - py4web
+    networks:
+      - backend
+      - frontend
+
+  db:
+    image: mysql:8
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: py4webdb
+      MYSQL_USER: py4webuser
+      MYSQL_PASSWORD: py4webpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+  fail2ban:
+    image: crazymax/fail2ban:latest
+    container_name: fail2ban_service
+    volumes:
+      - ./fail2ban:/data
+      - /var/log:/var/log:ro
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+volumes:
+  mysql_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  frontend:
+  backend:
