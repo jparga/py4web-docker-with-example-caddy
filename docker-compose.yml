@@ -1,4 +1,3 @@
-version: '3.9'
 
 services:
   py4web:
@@ -23,7 +22,7 @@ services:
       - "443:443"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile # Caddyfile configuration
-      #  - ./caddy/Caddyfile.local:/etc/caddy/Caddyfile # Uncomment for local development
+      #- ./caddy/Caddyfile.local:/etc/caddy/Caddyfile # Uncomment for local development
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

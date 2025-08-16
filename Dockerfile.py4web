@@ -20,8 +20,10 @@ WORKDIR /home/py4web
 RUN python3 -m venv /home/py4web/venv
 ENV PATH="/home/py4web/venv/bin:$PATH"
 
+# Copiar archivo de dependencias Python
+COPY requirements.txt /home/py4web/requirements.txt
 # Instalar dependencias de Python
-RUN pip install --no-cache-dir py4web mysqlclient
+RUN pip install --no-cache-dir -r /home/py4web/requirements.txt
 
 # Copiar apps iniciales
 COPY apps /home/py4web/apps
