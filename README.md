@@ -7,6 +7,20 @@ Por defecto, el archivo de configuración de Caddy (`caddy/Caddyfile`) utiliza e
 - Si lo consideras necesario, también puedes modificar el puerto para adaptarlo a tu entorno.
 
 Edita el archivo `caddy/Caddyfile` antes de desplegar para evitar problemas de acceso o redirección.
+
+## 🧪 Configuración local de Caddy
+
+Para pruebas en entorno local, puedes utilizar el bloque de configuración con `:80` en el archivo `caddy/Caddyfile`:
+
+```caddyfile
+:80 {
+	reverse_proxy py4web:8000
+}
+```
+
+Esto permite acceder a la aplicación desde `http://localhost` sin necesidad de un dominio. Es útil para desarrollo y pruebas antes de desplegar en producción.
+
+**Recuerda:** Este bloque debe usarse solo en local y no en producción. Puedes comentarlo o eliminarlo cuando configures el dominio real.
 # py4web + Caddy + MySQL + Fail2Ban en Docker
 
 ## 1️⃣ Requisitos

@@ -22,7 +22,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile # Caddyfile configuration
+      #  - ./caddy/Caddyfile.local:/etc/caddy/Caddyfile # Uncomment for local development
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
