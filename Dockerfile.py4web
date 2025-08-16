@@ -1,9 +1,18 @@
 FROM ubuntu:24.04
 
+# Instalar dependencias del sistema necesarias para py4web y mysqlclient
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv git build-essential libmysqlclient-dev && \
+    apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    git \
+    build-essential \
+    pkg-config \
+    default-libmysqlclient-dev && \
     useradd -ms /bin/bash py4web
 
+# Cambiar al usuario py4web
 USER py4web
 WORKDIR /home/py4web
 
@@ -11,11 +20,12 @@ WORKDIR /home/py4web
 RUN python3 -m venv /home/py4web/venv
 ENV PATH="/home/py4web/venv/bin:$PATH"
 
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir py4web mysqlclient
 
+# Copiar apps iniciales
 COPY apps /home/py4web/apps
 
 EXPOSE 8000
 
 CMD ["py4web", "run", "apps", "--host", "0.0.0.0", "--port", "8000"]
-
