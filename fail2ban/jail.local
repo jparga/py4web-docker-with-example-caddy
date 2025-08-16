@@ -9,3 +9,30 @@ port = http,https
 filter = py4web
 logpath = /var/log/caddy/access.log
 maxretry = 5
+
+[404]
+enabled = true
+filter = py4web-404
+logpath = /var/log/caddy/access.log
+maxretry = 5
+findtime = 600
+bantime = 3600
+action = iptables[name=HTTP-404, port=http, protocol=tcp]
+
+[403]
+enabled = true
+filter = py4web-403
+logpath = /var/log/caddy/access.log
+maxretry = 3
+findtime = 600
+bantime = 7200
+action = iptables[name=HTTP-403, port=http, protocol=tcp]
+
+[418]
+enabled = true
+filter = py4web-418
+logpath = /var/log/caddy/access.log
+maxretry = 1
+findtime = 600
+bantime = 86400
+action = iptables[name=HTTP-418, port=http, protocol=tcp]
