@@ -208,3 +208,4 @@ __marimo__/
 password.txt
 .vscode/launch.json
 .vscode/settings.json
+fail2ban/db/fail2ban.sqlite3
