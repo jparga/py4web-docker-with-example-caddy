@@ -12,6 +12,13 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Stay on the MySQL LTS line: innovation releases have short support and
+      # a data volume cannot be downgraded. Move to the next LTS by hand.
+      # Mantener la línea LTS de MySQL: las innovation tienen soporte corto y un
+      # volumen de datos no admite downgrade. El salto a la siguiente LTS es manual.
+      - dependency-name: mysql
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

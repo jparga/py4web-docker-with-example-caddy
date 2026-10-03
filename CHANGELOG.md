@@ -25,7 +25,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Dockerfile on `python:3.13-slim` with PyMySQL (no compiler), gunicorn server and pinned versions.
 - Caddyfile is a single file driven by `DOMAIN`, with security headers and JSON logs.
-- Compose: secrets from `.env`, internal `backend` network, pinned images (caddy 2.11, mysql 8.4, fail2ban 1.1.1), Fail2Ban behind the `fail2ban` profile.
+- Compose: secrets from `.env`, internal `backend` network, pinned images (caddy 2.11, mysql 9.7 LTS, fail2ban 1.1.1), Fail2Ban behind the `fail2ban` profile.
 - `deploy.sh`: relative path, branch argument, fast-forward only.
 
 ### Removed
@@ -44,6 +44,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
+- MySQL pinned to the 9.7 LTS line; a Dependabot bump had moved it to the 26.7 innovation release. Volumes initialised with 26.7 cannot be downgraded: recreate them (`docker compose down -v`) or keep 26.x.
 - `deploy.sh` pulled a non-existent `main` branch.
 - gunicorn workers raced to run PyDAL migrations on MySQL ("Table already exists"), leaving the app unloaded in some workers; migrations now run once before the workers start.
 - MySQL passwords with URL-reserved characters (e.g. from `openssl rand -base64`) broke the connection URI.
