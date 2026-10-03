@@ -1,0 +1,39 @@
+name: Bug report / Informe de error
+description: Report something that does not work / Informa de algo que no funciona
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description / Descripción
+      description: What happened? / ¿Qué ha ocurrido?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / Pasos para reproducir
+      placeholder: |
+        1.
+        2.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / Comportamiento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / Entorno
+      description: OS, Docker and Compose versions, commit or branch. / SO, versiones de Docker y Compose, commit o rama.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Registros
+      description: Output of `docker compose logs`. Remove any secret first. / Salida de `docker compose logs`. Elimina antes cualquier secreto.
+      render: shell

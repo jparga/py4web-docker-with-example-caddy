@@ -1,64 +1,90 @@
+# py4web + Caddy + MySQL + Fail2Ban
+# Configuration comes from .env (copy .env.example). / La configuración sale de .env (copia .env.example).
 
 services:
   py4web:
-    build:
-      context: .
-      dockerfile: Dockerfile.py4web
-    container_name: py4web_app
+    build: .
+    image: py4web-app:local
     restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?set MYSQL_DATABASE in .env}
+      MYSQL_USER: ${MYSQL_USER:?set MYSQL_USER in .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      DB_HOST: db
+      PY4WEB_WORKERS: ${PY4WEB_WORKERS:-2}
+      PY4WEB_DASHBOARD_MODE: ${PY4WEB_DASHBOARD_MODE:-none}
+      PY4WEB_DASHBOARD_PASSWORD: ${PY4WEB_DASHBOARD_PASSWORD:-}
     volumes:
-      - ./apps:/home/py4web/apps
+      - py4web_service:/home/py4web/apps/.service
+      - py4web_databases:/home/py4web/apps/example_app/databases
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - backend
+    security_opt:
+      - no-new-privileges:true
 
   caddy:
-    image: caddy:latest
-    container_name: caddy_server
+    image: caddy:2.11-alpine
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:-http://localhost}
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile # Caddyfile configuration
-      #- ./caddy/Caddyfile.local:/etc/caddy/Caddyfile # Uncomment for local development
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./logs/caddy:/var/log/caddy
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - py4web
+      py4web:
+        condition: service_healthy
     networks:
-      - backend
       - frontend
+      - backend
 
   db:
-    image: mysql:8
-    container_name: mysql_db
+    image: mysql:8.4
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: py4webdb
-      MYSQL_USER: py4webuser
-      MYSQL_PASSWORD: py4webpass
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     networks:
       - backend
 
   fail2ban:
-    image: crazymax/fail2ban:latest
-    container_name: fail2ban_service
+    image: crazymax/fail2ban:1.1.1
     restart: unless-stopped
-    volumes:
-      - ./fail2ban:/data
-      - /var/log:/var/log:ro
+    profiles: ["fail2ban"]
     network_mode: host
     cap_add:
       - NET_ADMIN
       - NET_RAW
+    environment:
+      TZ: ${TZ:-UTC}
+      F2B_LOG_TARGET: STDOUT
+      F2B_DB_PURGE_AGE: 7d
+    volumes:
+      - ./fail2ban:/data
+      - ./logs/caddy:/var/log/caddy:ro
 
 volumes:
+  py4web_service:
+  py4web_databases:
   mysql_data:
   caddy_data:
   caddy_config:
@@ -66,3 +92,4 @@ volumes:
 networks:
   frontend:
   backend:
+    internal: true

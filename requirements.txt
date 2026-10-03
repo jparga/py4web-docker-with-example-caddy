@@ -1,2 +1,3 @@
-py4web
-mysqlclient
+py4web==1.20260805.0
+PyMySQL==1.2.3
+gunicorn==26.2.0
