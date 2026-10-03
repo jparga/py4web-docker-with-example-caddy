@@ -47,7 +47,9 @@ services:
       - backend
 
   db:
-    image: mysql:26.7
+    # LTS release line; Dependabot only proposes patch updates (see .github/dependabot.yml).
+    # Línea LTS; Dependabot solo propone parches (ver .github/dependabot.yml).
+    image: mysql:9.7
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}

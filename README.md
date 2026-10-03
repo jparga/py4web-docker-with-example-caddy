@@ -7,7 +7,7 @@
 
 ## What it is
 
-A production-ready template to run a [py4web](https://py4web.com) application with Docker Compose: py4web (gunicorn) behind [Caddy](https://caddyserver.com) with automatic HTTPS, MySQL 8.4 as the database, and optional Fail2Ban that bans abusive IPs. It ships with a small `example_app` (MySQL via environment variables, a `/health` endpoint and an anonymous page-view counter) that you can replace with your own app.
+A production-ready template to run a [py4web](https://py4web.com) application with Docker Compose: py4web (gunicorn) behind [Caddy](https://caddyserver.com) with automatic HTTPS, MySQL 9.7 LTS as the database, and optional Fail2Ban that bans abusive IPs. It ships with a small `example_app` (MySQL via environment variables, a `/health` endpoint and an anonymous page-view counter) that you can replace with your own app.
 
 ## Architecture
 
@@ -19,7 +19,7 @@ flowchart LR
     end
     subgraph backend["backend (internal: true, no outbound internet)"]
         py4web["py4web :8000 (gunicorn)"]
-        MySQL[("MySQL 8.4")]
+        MySQL[("MySQL 9.7 LTS")]
     end
     Caddy -->|reverse proxy| py4web
     py4web --> MySQL
@@ -160,6 +160,8 @@ Backup example:
 ```bash
 docker compose exec db sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction "$MYSQL_DATABASE"' > backup.sql
 ```
+
+MySQL upgrades: the image follows the 9.7 LTS line and Dependabot only proposes patch updates. A MySQL data volume cannot be downgraded, so take a backup before moving to a newer release line.
 
 ## Security notes
 
