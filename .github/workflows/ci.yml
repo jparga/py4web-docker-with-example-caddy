@@ -75,7 +75,8 @@ jobs:
           curl -sI http://localhost/example_app/index | grep -qi '^x-content-type-options: nosniff'
           ! curl -sI http://localhost/example_app/index | grep -qi '^server:'
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost/_dashboard)" != 200
-          grep -q '"status":200' logs/caddy/access.log
+          # Caddy writes the log as root with mode 0600 (Fail2Ban also runs as root).
+          sudo grep -q '"status":200' logs/caddy/access.log
 
       - name: Logs on failure
         if: failure()
