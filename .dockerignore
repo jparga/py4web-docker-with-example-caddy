@@ -1,0 +1,7 @@
+*
+!requirements.txt
+!docker/entrypoint.sh
+!apps/example_app/
+apps/example_app/databases/
+apps/example_app/settings_private.py
+**/__pycache__/

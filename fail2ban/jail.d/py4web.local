@@ -1,0 +1,24 @@
+# Loaded by crazymax/fail2ban from /data/jail.d. / Cargado por crazymax/fail2ban desde /data/jail.d.
+# Bans go to the DOCKER-USER chain: INPUT does not see traffic to published container ports.
+# Los baneos van a la cadena DOCKER-USER: INPUT no ve el tráfico a puertos publicados de contenedores.
+[DEFAULT]
+ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+banaction = iptables-multiport
+chain = DOCKER-USER
+port = http,https
+logpath = /var/log/caddy/access.log
+backend = polling
+
+[caddy-py4web-auth]
+enabled = true
+filter = caddy-py4web-auth
+maxretry = 5
+findtime = 10m
+bantime = 1h
+
+[caddy-py4web-scan]
+enabled = true
+filter = caddy-py4web-scan
+maxretry = 20
+findtime = 1m
+bantime = 6h

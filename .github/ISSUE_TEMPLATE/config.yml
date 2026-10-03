@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability / Informar de una vulnerabilidad
+    url: https://github.com/jparga/py4web-docker-with-example-caddy/security/advisories/new
+    about: Report security problems privately, not in public issues. / Informa de problemas de seguridad en privado, no en issues públicos.

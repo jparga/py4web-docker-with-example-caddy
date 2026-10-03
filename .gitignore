@@ -1,3 +1,25 @@
+# --- Project / Proyecto -------------------------------------------------------
+# Secrets / Secretos
+.env
+settings_private.py
+!settings_private.example.py
+password.txt
+session.secret
+# py4web runtime state / Estado en ejecución de py4web
+apps/.service/
+apps/*/databases/
+apps/*/uploads/
+*.table
+*.db
+*.sqlite3
+# Docker bind mounts / Montajes del host
+logs/
+fail2ban/db/
+# Editors / Editores
+.vscode/
+.idea/
+
+# --- Python (GitHub template) -------------------------------------------------
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -182,9 +204,9 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore
 #  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#  and can be added to the global gitignore or merged into this file. However, if you prefer,
 #  you could uncomment the following to ignore the entire vscode folder
 # .vscode/
 
@@ -205,7 +227,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-password.txt
-.vscode/launch.json
-.vscode/settings.json
-fail2ban/db/fail2ban.sqlite3
+
+# Test fixture / Fichero de prueba
+!tests/fail2ban/caddy-access.log

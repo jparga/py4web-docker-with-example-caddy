@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>py4web + Caddy + MySQL</title>
+    <link rel="stylesheet" href="[[=URL('static/css/style.css')]]">
+  </head>
+  <body>
+    <main>
+      <h1>py4web + Caddy + MySQL</h1>
+      <p>It works! / ¡Funciona!</p>
+      <dl>
+        <dt>Database backend / Motor de base de datos</dt>
+        <dd>[[=backend]]</dd>
+        <dt>Page views / Visitas</dt>
+        <dd>[[=views]]</dd>
+      </dl>
+      <p><a href="[[=URL('health')]]">/health</a></p>
+    </main>
+  </body>
+</html>
