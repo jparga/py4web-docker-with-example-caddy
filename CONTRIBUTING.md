@@ -27,6 +27,8 @@ pre-commit run --all-files
 Test locally before opening the PR:
 
 ```bash
+pip install pytest && pytest -q tests
+tests/fail2ban/test_filters.sh
 docker compose up -d --build --wait
 curl http://localhost/example_app/health
 ```

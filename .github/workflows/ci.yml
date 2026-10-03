@@ -29,6 +29,11 @@ jobs:
       - name: pre-commit (gitleaks, ruff, shellcheck, hadolint, yaml)
         uses: pre-commit/action@v3.0.1
 
+      - name: Unit tests
+        run: |
+          pip install pytest
+          pytest -q tests
+
       - name: Validate docker-compose.yml
         run: |
           cp .env.example .env

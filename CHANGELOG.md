@@ -18,6 +18,8 @@ All notable changes to this project are documented here. The format follows [Kee
 - Issue and PR templates.
 - Bilingual (English/Spanish) docs.
 - `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`.
+- Unit tests for `settings.py` (pytest) and Fail2Ban filter test.
+- `CODEOWNERS`.
 
 ### Changed
 
@@ -43,4 +45,6 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Fixed
 
 - `deploy.sh` pulled a non-existent `main` branch.
+- gunicorn workers raced to run PyDAL migrations on MySQL ("Table already exists"), leaving the app unloaded in some workers; migrations now run once before the workers start.
+- MySQL passwords with URL-reserved characters (e.g. from `openssl rand -base64`) broke the connection URI.
 - Fail2Ban could never ban: logs were not shared, wrong log format, wrong config path, and the `INPUT` chain was used instead of `DOCKER-USER`.
