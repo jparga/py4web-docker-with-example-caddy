@@ -69,7 +69,8 @@ jobs:
         run: |
           set -x
           curl -fsS http://localhost/example_app/health | grep -q '"ok"'
-          curl -fsS http://localhost/example_app/index | grep -q 'mysql'
+          # Several requests so every gunicorn worker is hit.
+          for _ in $(seq 10); do curl -fsS http://localhost/example_app/index | grep -q 'mysql'; done
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost/)" = 302
           curl -sI http://localhost/example_app/index | grep -qi '^x-content-type-options: nosniff'
           ! curl -sI http://localhost/example_app/index | grep -qi '^server:'

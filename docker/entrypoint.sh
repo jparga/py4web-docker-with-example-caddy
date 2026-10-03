@@ -29,6 +29,12 @@ if [ "$DASHBOARD_MODE" != "none" ]; then
     py4web set_password --password "$PY4WEB_DASHBOARD_PASSWORD" --password_file "$PASSWORD_FILE" >/dev/null
 fi
 
+# Load the apps once so PyDAL migrations run in a single process; otherwise every
+# gunicorn worker races to create the same tables ("Table ... already exists").
+# Carga las apps una vez para que las migraciones de PyDAL corran en un solo proceso;
+# si no, cada worker de gunicorn compite por crear las mismas tablas.
+python -c "from py4web.core import wsgi; wsgi(apps_folder='$APPS_DIR', dashboard_mode='none', password_file='$PASSWORD_FILE', logging_level=$LOGGING_LEVEL)"
+
 # gunicorn is started directly on py4web's WSGI factory: "py4web run --server gunicorn"
 # fails in py4web 1.20260805 ("No configuration setting for: reloader").
 # Se arranca gunicorn directamente sobre la factoría WSGI de py4web: "py4web run --server
