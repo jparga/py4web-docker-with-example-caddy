@@ -15,7 +15,7 @@ We acknowledge reports within 7 days.
 
 ### Past incidents
 
-Until this release the repository tracked py4web runtime files (`apps/.service/session.secret` and SQLite databases). They have been removed and are now git-ignored. The session secret is regenerated on first start, so the leaked value is invalid for any new deployment.
+Before v1.0.0 the repository tracked py4web runtime files (`apps/.service/session.secret` and SQLite databases). They have been removed and are now git-ignored. The session secret is regenerated on first start, so the leaked value is invalid for any new deployment.
 
 If you deployed an earlier version, delete `apps/.service/session.secret` and restart; users will be logged out. The git history was intentionally not rewritten.
 
@@ -34,6 +34,6 @@ Acusamos recibo en un plazo de 7 días.
 
 ### Incidentes previos
 
-Hasta esta versión el repositorio incluía ficheros de ejecución de py4web (`apps/.service/session.secret` y bases de datos SQLite). Se han eliminado y ahora están en `.gitignore`. El secreto de sesión se regenera en el primer arranque, así que el valor filtrado no es válido en ningún despliegue nuevo.
+Antes de la v1.0.0 el repositorio incluía ficheros de ejecución de py4web (`apps/.service/session.secret` y bases de datos SQLite). Se han eliminado y ahora están en `.gitignore`. El secreto de sesión se regenera en el primer arranque, así que el valor filtrado no es válido en ningún despliegue nuevo.
 
 Si desplegaste una versión anterior, borra `apps/.service/session.secret` y reinicia; se cerrará la sesión de los usuarios. El historial de git no se ha reescrito de forma deliberada.
