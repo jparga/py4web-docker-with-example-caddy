@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-03
+
 ### Added
 
 - `example_app`: MySQL via environment variables, `/health` endpoint and anonymous page-view counter.
@@ -49,3 +51,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - gunicorn workers raced to run PyDAL migrations on MySQL ("Table already exists"), leaving the app unloaded in some workers; migrations now run once before the workers start.
 - MySQL passwords with URL-reserved characters (e.g. from `openssl rand -base64`) broke the connection URI.
 - Fail2Ban could never ban: logs were not shared, wrong log format, wrong config path, and the `INPUT` chain was used instead of `DOCKER-USER`.
+
+[Unreleased]: https://github.com/jparga/py4web-docker-with-example-caddy/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/jparga/py4web-docker-with-example-caddy/releases/tag/v1.0.0
